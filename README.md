@@ -4,13 +4,13 @@ This is a simple React chat application that connects to the chat server using w
 
 ## Technological details
 
-React
-Styled components 
-Axios
-NodeJs
-Express
-Mongodb
-bcrypt-js
+React,\
+Styled components,\
+Axios,\
+NodeJs,\
+Express,\
+Mongodb,\
+bcrypt-js,\
 
 ## Available Scripts
 
