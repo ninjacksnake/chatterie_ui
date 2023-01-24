@@ -22,30 +22,39 @@ const SetAvatar = () => {
     theme: "dark",
   };
 
-  useEffect(()=>{
-    if(!localStorage.getItem("chat-app-user")){
-      navigate("/login")
+  useEffect(() => {
+    if (!localStorage.getItem("chat-app-user")) {
+      navigate("/login");
     }
-  },[]);
-  
+  }, []);
+
   const setAvatarPicture = async () => {
     if (selectedAvatar === undefined) {
       toast.error("Please select an avatar picture", toastOptions);
-    }else{
-        const user = await JSON.parse(localStorage.getItem("chat-app-user"));
-      //  console.log(user)
-        const {data}  = await axios.post(`${setAvatarRoute}/${user._id}}`,{
-            image: avatars[selectedAvatar],
-        });
-//console.log(data);
-        if (data.isSet){
+    } else {
+      const user = await JSON.parse(localStorage.getItem("chat-app-user"));
+      await axios
+        .post(`${setAvatarRoute}/${user._id}}`, {
+          image: avatars[selectedAvatar],
+        })
+        .then((response) => {
+          let data = response.data;
+          console.log('after response',data);
+          if (data.isSet) {
+          //  localStorage.clear();
             user.isAvatarSet = true;
             user.avatar = data.image;
             localStorage.setItem("chat-app-user", JSON.stringify(user));
-            navigate('/')
-        }else{
-            toast.error('Ther was an error picking your avatar try again.', toastOptions);
-        }
+            navigate("/");
+          } else {
+            toast.error(
+              "Ther was an error picking your avatar try again.",
+              toastOptions
+            );
+          }
+        }).catch((error)=>{
+        //  toast.error("There was an error setting ", toastOptions)
+        })
     }
   };
   useEffect(() => {
@@ -59,16 +68,16 @@ const SetAvatar = () => {
         data.push(bufferImage.toString("base64"));
       }
     };
-    fetchData().then((response) => {
-      setAvatars(data);
-      setIsloading(false);
-    }).catch((error) => {
-        if(error.response.status === 503){
-            console.error("Too many requests to avatar api  try in 1 minute");
-         //   toast.error("Too many requests try in 1 minute", toastOptions)
+    fetchData()
+      .then((response) => {
+        setAvatars(data);
+        setIsloading(false);
+      })
+      .catch((error) => {
+        if (error.response.status === 503) {
+          console.error("Too many requests to avatar api  try in 1 minute");
         }
-        
-    });
+      });
   }, []);
 
   return (

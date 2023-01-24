@@ -10,7 +10,7 @@ Axios,\
 NodeJs,\
 Express,\
 Mongodb,\
-bcrypt-js,\
+bcrypt-js,
 
 ## Available Scripts
 

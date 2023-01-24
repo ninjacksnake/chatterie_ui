@@ -92,13 +92,13 @@ const Container = styled.div`
     align-items: center;
     overflow: auto;
     gap: 0.8rem;
-    &::-webkit-scrollbar{
-        width: 0.2rem;
-        &-thumb{
-            background-color: white;
-            width: 0.1rem;
-            border-radius: 1rem;
-        }
+    &::-webkit-scrollbar {
+      width: 0.2rem;
+      &-thumb {
+        background-color: white;
+        width: 0.1rem;
+        border-radius: 1rem;
+      }
     }
     .contact {
       background-color: #ffffff39;
@@ -123,13 +123,9 @@ const Container = styled.div`
       }
     }
     .selected {
-        background-color: #9186f3;
-      }
-
-
-} //contacts 
-
- 
+      background-color: #9186f3;
+    }
+  } //contacts
 
   .current-user {
     background-color: #0d0d30;
@@ -150,11 +146,10 @@ const Container = styled.div`
     }
     @media screen and (min-width: 720px) and (max-width: 1080px) {
       gap: 0.5rem;
-      .username{
+      .username {
         h2 {
-            font-size: 1rem;
+          font-size: 1rem;
         }
-      }
       }
     }
   }

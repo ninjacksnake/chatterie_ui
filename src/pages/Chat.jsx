@@ -1,20 +1,29 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import ChatContainer from "../components/ChatContainer";
 import Contacts from "../components/Contacts";
 import Welcome from "../components/Welcome";
+import { io } from "socket.io-client";
 
-import { usersRoute } from "../utils/APIRoutes";
+import { usersRoute , socketHost as host} from "../utils/APIRoutes";
 
 const Chat = () => {
+  const socket = useRef(io.socket);
   const navigate = useNavigate();
   const [contacts, setContacts] = useState([]);
   const [currentUser, setCurrentUser] = useState(undefined);
   const [chat, setChat] = useState(undefined);
   const [isLoaded, setisLoaded] = useState(false);
-  
+
+  useEffect(() => {
+    if (currentUser) {
+      socket.current = io(host);
+      socket.current.emit('add-user', currentUser._id)
+    }
+  }, [currentUser]);
+
   useEffect(() => {
     // console.log(localStorage.getItem("chat-app-user"))
     if (!localStorage.getItem("chat-app-user")) {
@@ -65,17 +74,16 @@ const Chat = () => {
   return (
     <Container>
       <div className="container">
-      
         <Contacts
           contacts={contacts}
           currentUser={currentUser}
           changeChat={handleChatChange}
         />
 
-        { isLoaded && chat === undefined ? (
+        {isLoaded && chat === undefined ? (
           <Welcome currentUser={currentUser} />
         ) : (
-          <ChatContainer chat={chat} />
+          <ChatContainer chat={chat} currentUser={currentUser} socket ={socket}/>
         )}
       </div>
     </Container>

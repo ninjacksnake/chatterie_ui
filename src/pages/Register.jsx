@@ -25,24 +25,27 @@ const Register = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (handleValidation()) {
-     // console.log("validate");
-     // console.log("valid ation is true, ", registerRoute);
       const { password,  username, email } = values;
-      const {data} = await axios.post(registerRoute, {
+      await axios.post(registerRoute, {
         username,
         password,
         email,
-      });
-      if(data.status === false){
-        toast.error(data.message, toastOptions);
-      }if(data.status === true){
-      //  console.log(data)
-        delete data.user.password;
-        localStorage.setItem('chat-app-user', JSON.stringify(data.user));
-      }
-      navigate('/')
+      }).then((response) => {
+        let data = response.data;
+        if(data.status === false){
+          toast.error(data.message, toastOptions);
+        }else if(data.status === true){
+          delete data.user.password;
+          localStorage.setItem('chat-app-user', JSON.stringify(data.user));
+          navigate('/login')
+        }
+      }).catch((error)=>{
+        toast.error("This user already exists ", toastOptions);
+    
+      })
     }
   };
+
   const handleChange = (event) => {
     setValues({
       ...values,
