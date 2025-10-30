@@ -1,9 +1,10 @@
 //const host = 'http://localhost:5000';
 //const host = `https://ninchatapi.onrender.com`;
-const host = `http://localhost:4300`;
-export const registerRoute = `${host}/api/auth/register`;
-export const loginRoute = `${host}/api/auth/login`;
-export const setAvatarRoute = `${host}/api/auth/setAvatar`;
-export const usersRoute = `${host}/api/auth/users`;
-export const messagesRoute = `${host}/api/auth/messages`;
-export const socketHost = `localhost:4300`;
+const host = `http://localhost:4100`; // rest api url 
+export const socketHost = `localhost:4300`; // socket url
+const authRoute = `${host}/api/auth`;
+export const registerRoute = `${authRoute}/register`;
+export const loginRoute = `${authRoute}/login`;
+export const setAvatarRoute = `${authRoute}/setAvatar`;
+export const usersRoute = `${authRoute}/users`;
+export const messagesRoute = `${authRoute}/messages`;
