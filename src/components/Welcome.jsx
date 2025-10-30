@@ -5,7 +5,7 @@ import Robot from "../assets/robot.gif";
 function Welcome({ currentUser }) {
   return (
     <Container>
-      <img src={Robot} alt="Robot" />
+      <img src={Robot} alt="Robot" style={{ height: "300px" ,marginBottom: "2rem", borderRadius: "50%", objectFit: "cover"}} />
       <h1>
         Welcome, <span>{currentUser.username}!</span>
       </h1>

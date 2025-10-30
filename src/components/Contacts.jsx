@@ -29,6 +29,7 @@ const Contacts = ({ contacts, currentUser, changeChat }) => {
           <div className="contacts">
             {contacts.map((contact, index) => {
               return (
+                contact.username !== currentUser.username && (
                 <div
                   className={`contact ${
                     index === currentSelected ? "selected" : ""
@@ -47,6 +48,7 @@ const Contacts = ({ contacts, currentUser, changeChat }) => {
                     <h3>{contact.username}</h3>
                   </div>
                 </div>
+                )
               );
             })}
           </div>

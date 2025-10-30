@@ -7,13 +7,19 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { setAvatarRoute } from "../utils/APIRoutes";
 import { Buffer } from "buffer";
+import { createAvatar } from "@dicebear/core";
+import { openPeeps } from "@dicebear/collection";
 
 const SetAvatar = () => {
-  const api = "https://api.multiavatar.com/45678945";
+  /// const api = "https://api.multiavatar.com/45678945";  api down
+  // const api = "https://api.dicebear.com/6.x/avataaars/svg"; another api
+
   const navigate = useNavigate();
+  const [user, setUser] = useState(undefined);
   const [avatars, setAvatars] = useState([]);
   const [isLoading, setIsloading] = useState(true);
   const [selectedAvatar, setSelectedAvatar] = useState(undefined);
+  const [isGenerating, setIsGenerating] = useState(false);
   const toastOptions = {
     draggable: true,
     position: "bottom-center",
@@ -23,16 +29,52 @@ const SetAvatar = () => {
   };
 
   useEffect(() => {
-    if (!localStorage.getItem("chat-app-user")) {
+    async function checkLogin() {
+    let Islogged = localStorage.getItem("chat-app-user") ? true : false;
+    if (!Islogged) {
       navigate("/login");
+    } else {
+      setUser(JSON.parse(localStorage.getItem("chat-app-user")));
+     let avatarList = await generateAvatars();
+     setAvatars(avatarList);
+     setIsloading(false);
     }
+  }
+  checkLogin();
+
   }, []);
+
+  const generateAvatars = async () => {
+    if (isGenerating) return; // Prevent multiple calls 
+    setIsGenerating(true);
+    const avatarList = [];
+    for (let i = 0; i < 3; i++) {
+      let avatar = await generate();
+      avatarList.push(Buffer.from(avatar).toString("base64"));
+    }
+    return avatarList;
+  };
+
+  const generate = async () => {
+    let avatar = createAvatar(openPeeps, {
+      seed: Math.round(Math.random() * 1000),
+      scale: 90,
+      backgroundColor: ["b6e3f4", "c0aede", "d1d4f9", "ffd5dc", "ffeedb"],
+      backgroundType: ["solid", "gradientLinear", "gradientRadial"],
+      accessoriesProbability: 30,
+      accessories: ["glasses", "glasses2", "glasses4", "sunglasses", "eyepatch"],
+      clothingColor: ["8fa7df", "9ddadb", "78e185", "f4b9b2", "f4d150", "ffffff"],
+    }).toString();
+    return avatar;
+  }
+
 
   const setAvatarPicture = async () => {
     if (selectedAvatar === undefined) {
       toast.error("Please select an avatar picture", toastOptions);
     } else {
       const user = await JSON.parse(localStorage.getItem("chat-app-user"));
+
       await axios
         .post(`${setAvatarRoute}/${user._id}}`, {
           image: avatars[selectedAvatar],
@@ -57,34 +99,36 @@ const SetAvatar = () => {
         })
     }
   };
-  useEffect(() => {
-    const data = [];
-    const fetchData = async () => {
-      for (let i = 0; i < 3; i++) {
-        const image = await axios.get(
-          `${api}/${Math.round(Math.random() * 1000)}`
-        );
-        const bufferImage = new Buffer(image.data);
-        data.push(bufferImage.toString("base64"));
-      }
-    };
-    fetchData()
-      .then((response) => {
-        setAvatars(data);
-        setIsloading(false);
-      })
-      .catch((error) => {
-        if (error.response.status === 503) {
-          console.error("Too many requests to avatar api  try in 1 minute");
-        }
-      });
-  }, []);
+  // useEffect(() => {
+  //   const data = [];
+
+  //   // const fetchData = async () => {
+  //   //   for (let i = 0; i < 3; i++) {
+  //   //     const image = await axios.get(
+  //   //       `${api}/${Math.round(Math.random() * 1000)}`
+  //   //     );
+  //   //     const bufferImage = new Buffer(image.data);
+  //   //     data.push(bufferImage.toString("base64"));
+  //   //   }
+  //  // };
+  //   // fetchData()
+  //   //   .then((response) => {
+  //   //     setAvatars(data);
+  //   //     setIsloading(false);
+  //   //   })
+  //     // .catch((error) => {
+  //     //   if (error.response.status === 503) {
+  //     //     console.error("Too many requests to avatar api  try in 1 minute");
+  //     //   }
+  //     // });
+  // }, []);
 
   return (
     <>
       {isLoading ? (
         <Container>
-          <img src={loader} alt="loader" className="loader" />
+          <img src={loader} alt="loader" className="loader" height={150} style={{ borderRadius: "50%" }} />
+          <h1 style={{ "color": "white" }}>Loading...</h1>
         </Container>
       ) : (
         <Container>
@@ -96,11 +140,11 @@ const SetAvatar = () => {
               return (
                 <div
                   key={index}
-                  className={`avatar ${
-                    selectedAvatar === index ? "selected" : ""
-                  }`}
+                  className={`avatar ${selectedAvatar === index ? "selected" : ""
+                    }`}
                 >
                   <img
+                  loading="lazy"
                     src={`data:image/svg+xml;base64,${avatar}`}
                     alt="avatar"
                     onClick={() => setSelectedAvatar(index)}
