@@ -1,7 +1,7 @@
 import axios from "axios";
-import React, { useEffect, useState, useRef } from "react";
+import  { useEffect, useState } from "react";
 import styled from "styled-components";
-import { messagesRoute, socketHost as host } from "../utils/APIRoutes";
+import { messagesRoute  } from "../utils/APIRoutes";
 import ChatInput from "./ChatInput";
 import LogOut from "./LogOut";
 import Messages from "./Messages";

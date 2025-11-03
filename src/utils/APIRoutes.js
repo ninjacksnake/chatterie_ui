@@ -1,7 +1,7 @@
 //const host = 'http://localhost:5000';
 //const host = `https://ninchatapi.onrender.com`;
-const host = `http://localhost:4100`; // rest api url 
-export const socketHost = `localhost:4300`; // socket url
+const host = process.env.REACT_APP_API_URL; // rest api url 
+export const socketHost = process.env.REACT_APP_SOCKET_URL; // socket url
 const authRoute = `${host}/api/auth`;
 export const registerRoute = `${authRoute}/register`;
 export const loginRoute = `${authRoute}/login`;

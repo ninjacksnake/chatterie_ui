@@ -6,7 +6,9 @@ import Register from "./pages/Register";
 import SetAvatar from "./pages/SetAvatar";
 
 export default function App() {
-  return <BrowserRouter>
+  return (
+    <BrowserRouter>
+
   <Routes>
     <Route path="/register" element={<Register />} />
     <Route path="/login" element={<Login />} />
@@ -14,5 +16,6 @@ export default function App() {
     <Route path="/setAvatar" element={<SetAvatar />} />
     <Route path="/chat" element={<Chat/>} /> 
   </Routes>
-  </BrowserRouter>;
+  </BrowserRouter>
+  )
 }
