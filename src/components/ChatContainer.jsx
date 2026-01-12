@@ -60,14 +60,14 @@ function ChatContainer({ chat, currentUser, socket }) {
   useEffect(() => {
     incomingMessage &&
       setMessages((prev) => {
-        console.log(prev)
+        console.log(prev);
         return [...prev, incomingMessage];
       });
   }, [incomingMessage]);
 
   return (
     <>
-      {chat !== undefined ? ( //this is an if statement abreviated
+      {chat !== null ? ( //this is an if statement abreviated
         <Container>
           <div className="chat-header">
             <div className="user-details">

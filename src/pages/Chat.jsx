@@ -13,8 +13,8 @@ const Chat = () => {
   const socket = useRef(io.socket);
   const navigate = useNavigate();
   const [contacts, setContacts] = useState([]);
-  const [currentUser, setCurrentUser] = useState(undefined);
-  const [chat, setChat] = useState(undefined);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [chat, setChat] = useState(null);
   const [isLoaded, setisLoaded] = useState(false);
 
   useEffect(() => {
@@ -80,7 +80,7 @@ const Chat = () => {
           changeChat={handleChatChange}
         />
 
-        {isLoaded && chat === undefined ? (
+        {isLoaded && chat === null ? (
           <Welcome currentUser={currentUser} />
         ) : (
           <ChatContainer chat={chat} currentUser={currentUser} socket ={socket}/>

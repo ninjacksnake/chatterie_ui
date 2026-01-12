@@ -6,8 +6,8 @@ import styled from "styled-components";
 import Logo from "../assets/ninjasoftlogowhite.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios  from "axios";
-import {  loginRoute } from "../utils/APIRoutes";
+import axios from "axios";
+import { loginRoute } from "../utils/APIRoutes";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -20,29 +20,29 @@ const Login = () => {
   };
   const [values, setValues] = useState();
 
-useEffect(()=>{
-  if(localStorage.getItem("chat-app-user")){
-    navigate("/")
-  }
-},[]);
+  useEffect(() => {
+    if (localStorage.getItem("chat-app-user")) {
+      navigate("/")
+    }
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (handleValidation()) {
       const { password, username } = values;
-      const {data} = await axios.post(loginRoute, {
+      const { data } = await axios.post(loginRoute, {
         username,
         password,
       });
-      if(data.status === false){
+      if (data.status === false) {
         toast.error(data.msg, toastOptions);
       }
-      if(data.status === true){
-        
+      if (data.status === true) {
+
         localStorage.setItem('chat-app-user', JSON.stringify(data.user));
         navigate('/')
       }
-     //console.log('data is', data);
+      //console.log('data is', data);
     }
   };
   const handleChange = (event) => {
@@ -53,11 +53,11 @@ useEffect(()=>{
   };
 
   const handleValidation = () => {
-    const { password,  username } = values;
-    if (username ==="") {
+    const { password, username } = values;
+    if (username === "") {
       toast.error("Username is required", toastOptions);
       return false;
-    } else if (password.length==="") {
+    } else if (password.length === "") {
       toast.error("Password is required", toastOptions);
       return false;
     }
@@ -77,18 +77,18 @@ useEffect(()=>{
             placeholder="Username"
             name="username"
             onChange={(e) => handleChange(e)}
-           min="3"
+            min="3"
           />
           <input
-            type="passwords"
+            type="password"
             placeholder="Password"
             name="password"
             onChange={(e) => handleChange(e)}
           />
-        
+
           <button type="submit">Log In</button>
           <span>
-           Need an account? <Link to="/register">Register HERE</Link>
+            Need an account? <Link to="/register">Register HERE</Link>
           </span>
         </form>
       </FormContainer>
